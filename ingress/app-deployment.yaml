@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: app1
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - name: app1
+        image: awsdeeplearningteam/mms_cpu
+        command: ["mxnet-model-server"]
+        args: ["start", "--mms-config", "/mxnet_model_server/mms_app_cpu.conf"]
+        env:
+        - name: AUTHOR
+          value: app1
+        ports:
+        - containerPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: app2
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+      - name: app2
+        image: dockersamples/static-site
+        env:
+        - name: AUTHOR
+          value: app2
+        ports:
+        - containerPort: 80

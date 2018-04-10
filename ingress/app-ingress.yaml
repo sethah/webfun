@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  rules:
+  - host: test.akomljen.com
+    http:
+      paths:
+      - backend:
+          serviceName: appsvc1
+          servicePort: 80
+        path: /app4
+      - backend:
+          # take all traffic received by ingress
+          # controller with hostname "test.akomljen.com"
+          # and path /squeezenet/predict and route that
+          # to the service appsvc1:80
+          serviceName: appsvc1
+          servicePort: 80
+        path: /squeezenet/predict
+      - backend:
+          serviceName: appsvc2
+          servicePort: 80
+        path: /app2
