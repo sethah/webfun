@@ -2,24 +2,23 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: app-ingress
+  # the rewrite rule will take your request like
+  # curl test.sethah.com:80/squeezenet/predict
+  # and change it forward it to the mx predict
+  # service but it will rewrite the path from 
+  # /squeezenet/predict to /, which is not good!
+  #annotations:
+  #  nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: test.akomljen.com
+  - host: test.sethah.com
     http:
       paths:
       - backend:
-          serviceName: appsvc1
-          servicePort: 80
-        path: /app4
-      - backend:
           # take all traffic received by ingress
-          # controller with hostname "test.akomljen.com"
+          # controller with hostname "test.sethah.com"
           # and path /squeezenet/predict and route that
-          # to the service appsvc1:80
-          serviceName: appsvc1
+          # to the service mx-predict-svc:80
+          serviceName: mx-predict-svc
           servicePort: 80
         path: /squeezenet/predict
-      - backend:
-          serviceName: appsvc2
-          servicePort: 80
-        path: /app2
